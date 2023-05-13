@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  final Function addNewTask;
-  AddTaskScreen(this.addNewTask);
+import '../models/task_data.dart';
 
+class AddTaskScreen extends StatefulWidget {
+  @override
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     TextEditingController taskTextController = TextEditingController();
+    final taskData = Provider.of<TaskData>(context);
+
     return Container(
-      color: Color(0xff757575),
+      color: const Color(0xff757575),
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(20), topLeft: Radius.circular(20))),
@@ -19,7 +26,7 @@ class AddTaskScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
+              const Text(
                 'Add Task',
                 style: TextStyle(color: Colors.lightBlueAccent, fontSize: 30),
                 textAlign: TextAlign.center,
@@ -30,9 +37,12 @@ class AddTaskScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               ElevatedButton(
-                child: Text('Add'),
+                child: const Text('Add'),
                 onPressed: () {
-                  addNewTask(taskTextController);
+                  setState(() {
+                    taskData.addTask(taskTextController.text);
+                    Navigator.pop(context);
+                  });
                 },
               ),
             ],
